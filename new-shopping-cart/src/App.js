@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import 'rbx/index.css'; //import in react file need styling
-import { Button, Container, Title, Message, Column, Card, Image, Content } from 'rbx'; //and specify the components
+import { Button, Container, Title, Message, Column, Card, Image, Content, Block } from 'rbx'; //and specify the components
 
 import firebase from 'firebase/app';
 import 'firebase/database';
@@ -10,6 +10,8 @@ import 'firebase/auth';
 import { ColumnGroup } from 'rbx/grid/columns/column-group';
 
 //
+const sizes = ['S', 'M', 'L', 'XL'];
+
 const Banner = () => (
   <React.Fragment>
     <Title>{ 'Shopping Cart' }</Title>
@@ -17,29 +19,62 @@ const Banner = () => (
 );
 
 
-
 const Product = ({ product }) => (
   <React.Fragment>
     <Column size="one-quarter"> 
-      <Card>
-        <Card.Image>
-          <Image.Container size={64} >
-            <Image src={`./data/products/${product.sku}_2.jpg`}/>
-          </Image.Container>
-        </Card.Image>
-        <Card.Content>
-          <Content>
-            { product.title }
-          </Content>
-        </Card.Content>
+      <Card textAlign={"centered"}>
+        <Card.Header>
+          <Card.Header.Title>{ product.title }</Card.Header.Title>
+        </Card.Header>
+        <Block>
+          <Card.Image>
+            <Image.Container as="p" size={'3by4'} >
+              <Image src={`./data/products/${product.sku}_1.jpg`}/>
+            </Image.Container>
+          </Card.Image>
+        </Block>
+        <Block>
+          <Card.Content>
+            <Block>
+              <Content size="medium">
+                {product.currencyFormat} { product.price }
+              </Content>
+            </Block>
+            <Block>
+              <Content>
+                  {product.description}
+              </Content>
+            </Block>
+          </Card.Content>
+        </Block>
+        <Card.Footer>
+          <Card.Footer.Item as="a" href="#">
+            Add to cart
+          </Card.Footer.Item>
+        </Card.Footer>
       </Card>
     </Column>
   </React.Fragment>
 );
 
+
+const SizeSelector = () => (
+  <Button.Group>
+    { sizes.map(size =>
+        <Button rounded key={size}
+        >
+          { size }
+        </Button>
+      ) 
+    }
+  </Button.Group>
+);
+
+
 const ProductList = ({ products }) => {
   return (
     <React.Fragment>
+      <SizeSelector />
       <Column.Group multiline >
         { products.map(product =>
           <Product key={ product.sku } product={ product } 
