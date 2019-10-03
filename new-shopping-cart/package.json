@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "firebase": "^7.0.0",
+    "rbx": "^2.2.0",
     "react": "^16.10.1",
     "react-dom": "^16.10.1",
     "react-firebaseui": "^4.0.0",
