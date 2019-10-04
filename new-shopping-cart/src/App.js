@@ -59,17 +59,21 @@ const Product = ({ product }) => (
   </React.Fragment>
 );
 
+
+
+
+
+
 const buttonColor = selected => (
   selected ? 'success' : null
 );
 
-const SizeSelector = ({ state }) => (
+const SizeSelector = ({ stateSize }) => (
   <Button.Group>
     { sizes.map(size =>
-        <Button color= { buttonColor(state.sizeList.includes(size)) } 
+        <Button color= { buttonColor(stateSize.sizeList.includes(size)) } 
         rounded key={size}
-        onClick={ ()=> state.toggle(size) }
-        
+        onClick={ () =>  stateSize.toggle(size) }
         >
           { size }
         </Button>
@@ -86,21 +90,25 @@ const useSizeSelection = () => {
   return [ sizeList, toggle ];
 };
 
-const ProductList = ({ products }) => {
-  const [sizeList, toggle] = useSizeSelection(sizes);
-  
 
+const ProductList = ({ products, stateProduct }) => {
+  const [sizeList, toggle] = useSizeSelection();
+  const productsDisplay = products.filter(product => sizeList.includes(product.size));
   return (
     <React.Fragment>
-      <SizeSelector state={ { sizeList, toggle } }/>
+      <SizeSelector stateSize={ { sizeList, toggle } } stateProduct={ stateProduct } products={ products }/>
       <Column.Group multiline >
-        { products.map(product =>
+        { productsDisplay.map(product =>
           <Product key={ product.sku } product={ product } 
           />) }
       </Column.Group>
     </React.Fragment>
   );
 };
+
+
+
+
 
 
 const SelectedItem = ({ selectedItem }) => (
@@ -133,6 +141,7 @@ const ShoppingCart = ({ selected, visible }) => {
  )
 }; 
 
+//在动作时调用就行
 const useSelection = () => {
   const [selected, setSelected] = useState({}); //selected是一个list
   const addProduct = (x) => { //x is product
@@ -161,6 +170,7 @@ const useSelection = () => {
 const App = () => {
   const [data, setData] = useState({});
   const products = Object.values(data);
+  const [productsDisplay, setProductDisplay] = useState([]);
 
   const [visible, setVisible] = useState(false);
   const [selected, addProduct, deleteProduct] = useSelection();
@@ -180,7 +190,7 @@ const App = () => {
       //<ShoppingCart selected={ selected } visible={ visible }/>
     <Container>
       <Banner />
-      <ProductList products={ products }/>
+      <ProductList products={ products } stateProduct={ { productsDisplay, setProductDisplay} }/>
     </Container> 
   );
 };

@@ -7,7 +7,8 @@
       "price": 10.9,
       "currencyId": "USD",
       "currencyFormat": "$",
-      "isFreeShipping": true
+      "isFreeShipping": true,
+      "size": "S"
     },
     "51498472915966370": {
       "sku": 51498472915966370,
@@ -17,7 +18,8 @@
       "price": 29.45,
       "currencyId": "USD",
       "currencyFormat": "$",
-      "isFreeShipping": true
+      "isFreeShipping": true,
+      "size": "S"
     },
     "10686354557628304": {
       "sku": 10686354557628304,
@@ -27,7 +29,8 @@
       "price": 9,
       "currencyId": "USD",
       "currencyFormat": "$",
-      "isFreeShipping": true
+      "isFreeShipping": true,
+      "size": "M"
     },
     "11033926921508488": {
       "sku": 11033926921508488,
@@ -37,7 +40,8 @@
       "price": 14,
       "currencyId": "USD",
       "currencyFormat": "$",
-      "isFreeShipping": true
+      "isFreeShipping": true,
+      "size": "XL"
     },
     "39876704341265610": {
       "sku": 39876704341265610,
@@ -47,7 +51,8 @@
       "price": 13.25,
       "currencyId": "USD",
       "currencyFormat": "$",
-      "isFreeShipping": true
+      "isFreeShipping": true,
+      "size": "S"
     },
     "10412368723880252": {
       "sku": 10412368723880252,
@@ -57,7 +62,8 @@
       "price": 75,
       "currencyId": "USD",
       "currencyFormat": "$",
-      "isFreeShipping": true
+      "isFreeShipping": true,
+      "size": "L"
     },
     "8552515751438644": {
       "sku": 8552515751438644,
@@ -67,7 +73,8 @@
       "price": 10.9,
       "currencyId": "USD",
       "currencyFormat": "$",
-      "isFreeShipping": true
+      "isFreeShipping": true,
+      "size": "M"
     },
     "18644119330491310": {
       "sku": 18644119330491310,
@@ -77,7 +84,8 @@
       "price": 10.9,
       "currencyId": "USD",
       "currencyFormat": "$",
-      "isFreeShipping": true
+      "isFreeShipping": true,
+      "size": "M"
     },
     "11854078013954528": {
       "sku": 11854078013954528,
@@ -87,7 +95,8 @@
       "price": 14.9,
       "currencyId": "USD",
       "currencyFormat": "$",
-      "isFreeShipping": true
+      "isFreeShipping": true,
+      "size": "XL"
     },
     "876661122392077": {
       "sku": 876661122392077,
@@ -97,7 +106,8 @@
       "price": 14.9,
       "currencyId": "USD",
       "currencyFormat": "$",
-      "isFreeShipping": true
+      "isFreeShipping": true,
+      "size": "L"
     },
     "9197907543445676": {
       "sku": 9197907543445676,
@@ -107,7 +117,8 @@
       "price": 25.9,
       "currencyId": "USD",
       "currencyFormat": "$",
-      "isFreeShipping": false
+      "isFreeShipping": false,
+      "size": "L"
     },
     "10547961582846888": {
       "sku": 10547961582846888,
@@ -117,7 +128,8 @@
       "price": 10.9,
       "currencyId": "USD",
       "currencyFormat": "$",
-      "isFreeShipping": false
+      "isFreeShipping": false,
+      "size": "S"
     },
     "6090484789343891": {
       "sku": 6090484789343891,
@@ -127,7 +139,8 @@
       "price": 49.9,
       "currencyId": "USD",
       "currencyFormat": "$",
-      "isFreeShipping": true
+      "isFreeShipping": true,
+      "size": "M"
     },
     "18532669286405344": {
       "sku": 18532669286405344,
@@ -137,7 +150,8 @@
       "price": 22.5,
       "currencyId": "USD",
       "currencyFormat": "$",
-      "isFreeShipping": true
+      "isFreeShipping": true,
+      "size": "XL"
     },
     "5619496040738316": {
       "sku": 5619496040738316,
@@ -147,7 +161,8 @@
       "price": 18.7,
       "currencyId": "USD",
       "currencyFormat": "$",
-      "isFreeShipping": false
+      "isFreeShipping": false,
+      "size": "M"
     },
     "11600983276356164": {
       "sku": 11600983276356164,
@@ -157,7 +172,8 @@
       "price": 134.9,
       "currencyId": "USD",
       "currencyFormat": "$",
-      "isFreeShipping": true
+      "isFreeShipping": true,
+      "size": "L"
     },
     "27250082398145996": {
       "sku": 27250082398145996,
@@ -167,6 +183,9 @@
       "price": 49,
       "currencyId": "USD",
       "currencyFormat": "$",
-      "isFreeShipping": true
+      "isFreeShipping": true,
+      "size": "S"
      }
  }
+
+ 
