@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import 'rbx/index.css'; //import in react file need styling
 import { Button, Container, Title, Message, Column, Card, Image, Content, Block, Box } from 'rbx'; //and specify the components
@@ -23,7 +22,7 @@ const Banner = () => (
 );
 
 //use badge for free shipping
-const Product = ({ product, stateSelect }) => (
+const Product = ({ product, stateSelect, setVisible }) => (
   <React.Fragment>
     <Column size="one-quarter"> 
       <Card textAlign={"centered"}
@@ -55,7 +54,10 @@ const Product = ({ product, stateSelect }) => (
         </Block>
         <Card.Footer>
           <Card.Footer.Item as="a" href="#" 
-            onClick={ () => stateSelect.addProduct(product) }
+            onClick={ () => { 
+              stateSelect.addProduct(product); 
+              setVisible(true);
+            }}
           >
             Add to cart
           </Card.Footer.Item>
@@ -76,7 +78,8 @@ const SizeSelector = ({ stateSize }) => (
     { sizes.map(size =>
         <Button color= { buttonColor(stateSize.sizeList.includes(size)) } 
         rounded key={size}
-        onClick={ () =>  stateSize.toggle(size) }
+        onClick={ () =>  stateSize.toggle(size)
+        }
         >
           { size }
         </Button>
@@ -94,7 +97,7 @@ const useSizeSelection = () => {
 };
 
 
-const ProductList = ({ products, stateProduct, stateSelect }) => {
+const ProductList = ({ products, stateProduct, stateSelect, setVisible }) => {
   const [sizeList, toggle] = useSizeSelection();
   const productsDisplay = products.filter(product => sizeList.includes(product.size));
   return (
@@ -102,15 +105,12 @@ const ProductList = ({ products, stateProduct, stateSelect }) => {
       <SizeSelector stateSize={ { sizeList, toggle } } stateProduct={ stateProduct } products={ products }/>
       <Column.Group multiline >
         { productsDisplay.map(product =>
-          <Product key={ product.sku } product={ product } stateSelect= { stateSelect }
+          <Product key={ product.sku } product={ product } stateSelect= { stateSelect } setVisible={ setVisible } 
           />) }
       </Column.Group>
     </React.Fragment>
   );
 };
-
-
-
 
 
 
@@ -170,8 +170,8 @@ const App = () => {
     
     <Container>
       <Banner />
-      <ShoppingCart selected={ selected } visible={ visible } deleteProduct={ deleteProduct }/>
-      <ProductList products={ products } stateProduct={ { productsDisplay, setProductDisplay} } stateSelect={ {selected, addProduct, deleteProduct} } />
+      <ShoppingCart selected={ selected } stateVisible={ { visible, setVisible } } deleteProduct={ deleteProduct }/>
+      <ProductList products={ products } stateProduct={ { productsDisplay, setProductDisplay} } stateSelect={ {selected, addProduct, deleteProduct} } setVisible={ setVisible }/>
     </Container> 
   );
 };

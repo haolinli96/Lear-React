@@ -1,4 +1,3 @@
-
 import {Button, Segment, Header, Icon, Image, Modal, Item } from 'semantic-ui-react'
 import React from 'react'
 
@@ -16,11 +15,13 @@ const SelectedItem = ({ selectedItem, deleteProduct }) => (
     </Item>
   );
 
-const ShoppingCart = ({ selected, visible, deleteProduct }) => {
+const ShoppingCart = ({ selected, stateVisible, deleteProduct }) => {
     return (
 
-  <Modal trigger={<Button>Scrolling Content Modal</Button>}>
-    <Modal.Header>Shopping Cart</Modal.Header>
+  <Modal open={ stateVisible.visible } trigger={<Button onClick={ () => stateVisible.setVisible(true) }>Cart</Button>}>
+    <Modal.Header>Shopping Cart
+    <Button onClick={ () => stateVisible.setVisible(false) }> close </Button>
+    </Modal.Header>
     <Modal.Content image scrolling>
       <Modal.Description>
         
