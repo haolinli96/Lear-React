@@ -23,7 +23,7 @@ const Banner = () => (
 );
 
 //use badge for free shipping
-const Product = ({ product }) => (
+const Product = ({ product, stateSelect }) => (
   <React.Fragment>
     <Column size="one-quarter"> 
       <Card textAlign={"centered"}
@@ -55,7 +55,7 @@ const Product = ({ product }) => (
         </Block>
         <Card.Footer>
           <Card.Footer.Item as="a" href="#" 
-            onClick={ (e) => alert("test") }
+            onClick={ () => stateSelect.addProduct(product) }
           >
             Add to cart
           </Card.Footer.Item>
@@ -94,7 +94,7 @@ const useSizeSelection = () => {
 };
 
 
-const ProductList = ({ products, stateProduct }) => {
+const ProductList = ({ products, stateProduct, stateSelect }) => {
   const [sizeList, toggle] = useSizeSelection();
   const productsDisplay = products.filter(product => sizeList.includes(product.size));
   return (
@@ -102,7 +102,7 @@ const ProductList = ({ products, stateProduct }) => {
       <SizeSelector stateSize={ { sizeList, toggle } } stateProduct={ stateProduct } products={ products }/>
       <Column.Group multiline >
         { productsDisplay.map(product =>
-          <Product key={ product.sku } product={ product } 
+          <Product key={ product.sku } product={ product } stateSelect= { stateSelect }
           />) }
       </Column.Group>
     </React.Fragment>
@@ -132,11 +132,13 @@ const useSelection = () => {
     var tempSelectedItem = selected.find(selectedItem => 
                             selectedItem.sku === x.sku);
     //tempSelectedItem {sku: 123, title: ..., q: 2}
-    setSelected(selected.filter(y => y !== tempSelectedItem));
     //without tempSelectedItem
-    if (Object.keys(selected).includes(x.sku))  tempSelectedItem.quantity += 1;
-    else  tempSelectedItem = Object.assign(tempQuantity, x);
-    setSelected([tempSelectedItem].concat(selected));
+    if (tempSelectedItem){ //setSelected(selected.filter(y => y !== tempSelectedItem));
+       tempSelectedItem.quantity += 1;}
+    else { tempSelectedItem = Object.assign(tempQuantity, x);
+    setSelected([tempSelectedItem].concat(selected));}
+
+
   };
   const deleteProduct = (x) => {
     setSelected(selected.filter(y => y.sku !== x.sku));
@@ -168,8 +170,8 @@ const App = () => {
     
     <Container>
       <Banner />
-      <ShoppingCart selected={ products } visible={ visible }/>
-      <ProductList products={ products } stateProduct={ { productsDisplay, setProductDisplay} }/>
+      <ShoppingCart selected={ selected } visible={ visible } deleteProduct={ deleteProduct }/>
+      <ProductList products={ products } stateProduct={ { productsDisplay, setProductDisplay} } stateSelect={ {selected, addProduct, deleteProduct} } />
     </Container> 
   );
 };

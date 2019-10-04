@@ -2,7 +2,7 @@
 import {Button, Segment, Header, Icon, Image, Modal, Item } from 'semantic-ui-react'
 import React from 'react'
 
-const SelectedItem = ({ selectedItem }) => (
+const SelectedItem = ({ selectedItem, deleteProduct }) => (
     <Item>
       <Item.Image size='tiny' src={`./data/products/${selectedItem.sku}_1.jpg`}/>
       <Item.Content>
@@ -10,13 +10,13 @@ const SelectedItem = ({ selectedItem }) => (
           <Item.Meta>Quantity: { selectedItem.quantity }</Item.Meta>
           <Item.Extra>{ selectedItem.size } | { selectedItem.description }</Item.Extra>
       </Item.Content>
-      <Button>
+      <Button onClick={ () => deleteProduct(selectedItem) }>
           remove
       </Button>
     </Item>
   );
 
-const ShoppingCart = ({ selected, visible }) => {
+const ShoppingCart = ({ selected, visible, deleteProduct }) => {
     return (
 
   <Modal trigger={<Button>Scrolling Content Modal</Button>}>
@@ -29,6 +29,7 @@ const ShoppingCart = ({ selected, visible }) => {
             selected.map(selectedItem => 
                 //console.log(selectedItem)
             <SelectedItem key={ selectedItem.sku } selectedItem={ selectedItem } 
+            deleteProduct={ deleteProduct }
             />
             )
           }
@@ -47,32 +48,6 @@ const ShoppingCart = ({ selected, visible }) => {
      
     )
    };
-   /* <Item.Group>
-    <Item>
-      <Item.Image size='tiny' src='/images/wireframe/image.png' />
-
-      <Item.Content>
-        <Item.Header as='a'>Header</Item.Header>
-        <Item.Meta>Description</Item.Meta>
-        <Item.Description>
-          <Image src='/images/wireframe/short-paragraph.png' />
-        </Item.Description>
-        <Item.Extra>Additional Details</Item.Extra>
-      </Item.Content>
-    </Item>
-
-    <Item>
-      <Item.Image size='tiny' src='/images/wireframe/image.png' />
-
-      <Item.Content>
-        <Item.Header as='a'>Header</Item.Header>
-        <Item.Meta>Description</Item.Meta>
-        <Item.Description>
-          <Image src='/images/wireframe/short-paragraph.png' />
-        </Item.Description>
-        <Item.Extra>Additional Details</Item.Extra>
-      </Item.Content>
-    </Item>
-  </Item.Group> */
+  
 
 export default ShoppingCart
