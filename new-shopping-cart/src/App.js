@@ -1,6 +1,7 @@
+
 import React, { useEffect, useState } from 'react';
 import 'rbx/index.css'; //import in react file need styling
-import { Button, Container, Title, Message, Column, Card, Image, Content, Block, Modal, Box } from 'rbx'; //and specify the components
+import { Button, Container, Title, Message, Column, Card, Image, Content, Block, Box } from 'rbx'; //and specify the components
 
 import firebase from 'firebase/app';
 import 'firebase/database';
@@ -9,7 +10,10 @@ import "firebase/firestore";
 import 'firebase/auth';
 import { ColumnGroup } from 'rbx/grid/columns/column-group';
 
+import ShoppingCart from './ShoppingCart'
 //
+
+
 const sizes = ['S', 'M', 'L', 'XL'];
 
 const Banner = () => (
@@ -22,7 +26,7 @@ const Banner = () => (
 const Product = ({ product }) => (
   <React.Fragment>
     <Column size="one-quarter"> 
-      <Card textAlign={"centered"} 
+      <Card textAlign={"centered"}
         tooltip={ product.isFreeShipping ? "Free shipping !" : "Shipping: $3" }
       >
         <Card.Header>
@@ -50,7 +54,9 @@ const Product = ({ product }) => (
           </Card.Content>
         </Block>
         <Card.Footer>
-          <Card.Footer.Item as="a" href="#">
+          <Card.Footer.Item as="a" href="#" 
+            onClick={ (e) => alert("test") }
+          >
             Add to cart
           </Card.Footer.Item>
         </Card.Footer>
@@ -58,9 +64,6 @@ const Product = ({ product }) => (
     </Column>
   </React.Fragment>
 );
-
-
-
 
 
 
@@ -111,39 +114,15 @@ const ProductList = ({ products, stateProduct }) => {
 
 
 
-const SelectedItem = ({ selectedItem }) => (
-  <Box>
 
-  </Box>
-);
 
 //overlay
 //use a card modal for this
-const ShoppingCart = ({ selected, visible }) => {
- return (
-  
-    <Modal modalProps={{ closeOnBlur: true, document }}>
-      <Modal.Background />
-      <Modal.Content>
-        <Image.Container as="p" size="4by3">
-          <Image src="https://bulma.io/images/placeholders/1280x960.png" />
-        </Image.Container>
-      </Modal.Content>
-      <Modal.Close />
-    </Modal>
-  /* <Modal>
-     { <Modal.Background />
-     <Modal.Content>
-       { selected.map(selectedItem =>
-        <SelectedItem key={ selectedItem.sku } selectedItem={ selectedItem }/>)}
-     </Modal.Content> }
-    </Modal> */
- )
-}; 
+
 
 //在动作时调用就行
 const useSelection = () => {
-  const [selected, setSelected] = useState({}); //selected是一个list
+  const [selected, setSelected] = useState([]); //selected是一个list
   const addProduct = (x) => { //x is product
     //setSelected(selected)
     //create new with quantity=1 when not included
@@ -187,9 +166,9 @@ const App = () => {
 
   return (
     
-      //<ShoppingCart selected={ selected } visible={ visible }/>
     <Container>
       <Banner />
+      <ShoppingCart selected={ products } visible={ visible }/>
       <ProductList products={ products } stateProduct={ { productsDisplay, setProductDisplay} }/>
     </Container> 
   );
