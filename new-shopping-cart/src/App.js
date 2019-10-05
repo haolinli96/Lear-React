@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import 'rbx/index.css'; //import in react file need styling
 import { Button, Container, Title, Message, Column, Card, Image, Content, Block, Box } from 'rbx'; //and specify the components
+import {db} from './db';
 
 import firebase from 'firebase/app';
 import 'firebase/database';
@@ -96,10 +97,18 @@ const useSizeSelection = () => {
   return [ sizeList, toggle ];
 };
 
+const AvailableSizeList = (product, sizeList) => {
+  const availableSizeList = sizeList.filter(size => product[size] !== 0);
+  return availableSizeList;
+};
+//一开始给的是不是空的！判断空的，读数据方法没错！！
 
 const ProductList = ({ products, stateProduct, stateSelect, setVisible }) => {
   const [sizeList, toggle] = useSizeSelection();
-  const productsDisplay = products.filter(product => sizeList.includes(product.size));
+  const productsDisplay = products.filter(product => AvailableSizeList(product, sizeList).length !== 0);
+  //const productsDisplay = products.filter(product => sizeList.includes(product.size));
+
+  //sizeList.includes(product.size)
   return (
     <React.Fragment>
       <SizeSelector stateSize={ { sizeList, toggle } } stateProduct={ stateProduct } products={ products }/>
@@ -150,7 +159,8 @@ const useSelection = () => {
 
 const App = () => {
   const [data, setData] = useState({});
-  const products = Object.values(data);
+  const [inventory, setInventory] = useState({});
+  const products = Object.values(data); 
   const [productsDisplay, setProductDisplay] = useState([]);
 
   const [visible, setVisible] = useState(false);
@@ -161,18 +171,28 @@ const App = () => {
     const fetchProducts = async () => {
       const response = await fetch('./data/products.json');
       const json = await response.json();
-      setData(json);
-    };
+      const handleData = snap => {
+        if (snap.val()) {
+          Object.keys(json).forEach(sku => {
+            Object.assign(json[sku], snap.val()[sku]);
+          });
+          setData(json); //put productInventory into product
+        }
+      };
+      db.on('value', handleData, error => alert(error));
+      return () => { db.off('value', handleData); };
+    }; 
     fetchProducts();
   }, []);
 
+  //inventory is an object not an array
   return (
-    
-    <Container>
+    //console.log(inventory)
+      <Container>
       <Banner />
       <ShoppingCart selected={ selected } stateVisible={ { visible, setVisible } } deleteProduct={ deleteProduct }/>
       <ProductList products={ products } stateProduct={ { productsDisplay, setProductDisplay} } stateSelect={ {selected, addProduct, deleteProduct} } setVisible={ setVisible }/>
-    </Container> 
+    </Container>   
   );
 };
 // {products.map(product => <li key={product.sku}>{product.title}</li>)}
@@ -181,7 +201,22 @@ export default App;
 
 
 
-
+/*inventory
+{
+ 12064273040195392: {
+      "S": 0,
+      "M": 3,
+      "L": 1,
+      "XL": 2
+    },
+    51498472915966370: {
+      "S": 0,
+      "M": 2,
+      "L": 3,
+      "XL": 2
+    }
+}
+*/
 
 
 
