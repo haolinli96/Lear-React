@@ -1,29 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import 'rbx/index.css'; //import in react file need styling
-import { Button, Container, Title, Message, Column, Card, Image, Content, Block, Box } from 'rbx'; //and specify the components
+//import 'rbx/index.css'; //import in react file need styling
+//import { Button, Container, Title, Message, Column, Card, Image, Content, Block, Box } from 'rbx'; //and specify the components
+import { Container, Header } from 'semantic-ui-react'
 import {db} from './db';
+import ProductList from './ProductList'
+import ShoppingCart from './ShoppingCart'
 
-import firebase from 'firebase/app';
+//import firebase from 'firebase/app';
 import 'firebase/database';
 import "firebase/auth";
 import "firebase/firestore";
 import 'firebase/auth';
-import { ColumnGroup } from 'rbx/grid/columns/column-group';
+//import { ColumnGroup } from 'rbx/grid/columns/column-group';
 
-import ShoppingCart from './ShoppingCart'
+
 //
-
-
-const sizes = ['S', 'M', 'L', 'XL'];
 
 const Banner = () => (
   <React.Fragment>
-    <Title>{ 'Shopping Cart' }</Title>
+    <Header>{ 'Shopping Cart' }</Header>
   </React.Fragment>
 );
 
 //use badge for free shipping
-const Product = ({ product, stateSelect, setVisible }) => (
+/* const Product = ({ product, stateSelect, setVisible }) => (
   <React.Fragment>
     <Column size="one-quarter"> 
       <Card textAlign={"centered"}
@@ -66,11 +66,11 @@ const Product = ({ product, stateSelect, setVisible }) => (
       </Card>
     </Column>
   </React.Fragment>
-);
+); */
 
 
 
-const buttonColor = selected => (
+/* const buttonColor = selected => (
   selected ? 'success' : null
 );
 
@@ -87,9 +87,9 @@ const SizeSelector = ({ stateSize }) => (
       ) 
     }
   </Button.Group>
-);
+); */
 
-const useSizeSelection = () => {
+/* const useSizeSelection = () => {
   const [sizeList, setSizeList] = useState(sizes);
   const toggle = (x) => {
     setSizeList(sizeList.includes(x) ? sizeList.filter(y => y !== x) : [x].concat(sizeList))
@@ -103,7 +103,7 @@ const AvailableSizeList = (product, sizeList) => {
 };
 //一开始给的是不是空的！判断空的，读数据方法没错！！
 
-const ProductList = ({ products, stateProduct, stateSelect, setVisible }) => {
+const ProductList = ({ products, stateProduct, stateSelect, setVisible, stateSizeChartVisible }) => {
   const [sizeList, toggle] = useSizeSelection();
   const productsDisplay = products.filter(product => AvailableSizeList(product, sizeList).length !== 0);
   //const productsDisplay = products.filter(product => sizeList.includes(product.size));
@@ -114,15 +114,12 @@ const ProductList = ({ products, stateProduct, stateSelect, setVisible }) => {
       <SizeSelector stateSize={ { sizeList, toggle } } stateProduct={ stateProduct } products={ products }/>
       <Column.Group multiline >
         { productsDisplay.map(product =>
-          <Product key={ product.sku } product={ product } stateSelect= { stateSelect } setVisible={ setVisible } 
+          <Product key={ product.sku } product={ product } stateSelect= { stateSelect } setVisible={ setVisible } stateSizeChartVisible = { stateSizeChartVisible } 
           />) }
       </Column.Group>
     </React.Fragment>
   );
-};
-
-
-
+}; */
 
 
 //overlay
@@ -132,25 +129,27 @@ const ProductList = ({ products, stateProduct, stateSelect, setVisible }) => {
 //在动作时调用就行
 const useSelection = () => {
   const [selected, setSelected] = useState([]); //selected是一个list
-  const addProduct = (x) => { //x is product
+  const addProduct = (x, size) => { //x is product
     //setSelected(selected)
     //create new with quantity=1 when not included
     //delete old and create new with quantity += 1 when included
     //both do insersion
-    var tempQuantity = { quantity: 1 };
+    var tempQuantitySize = { quantity: 1, size: size };
     var tempSelectedItem = selected.find(selectedItem => 
-                            selectedItem.sku === x.sku);
+                            (selectedItem.sku === x.sku) && (selectedItem.size === size) );
     //tempSelectedItem {sku: 123, title: ..., q: 2}
     //without tempSelectedItem
     if (tempSelectedItem){ //setSelected(selected.filter(y => y !== tempSelectedItem));
        tempSelectedItem.quantity += 1;}
-    else { tempSelectedItem = Object.assign(tempQuantity, x);
+    else { tempSelectedItem = Object.assign(tempQuantitySize, x);
     setSelected([tempSelectedItem].concat(selected));}
 
+    //改inventory！！！！！
 
   };
   const deleteProduct = (x) => {
-    setSelected(selected.filter(y => y.sku !== x.sku));
+    setSelected(selected.filter(y => ((y.sku !== x.sku) || (y.size !== x.size))));
+    //改inventory！！！！！！
 
   };
   return [selected, addProduct, deleteProduct];
@@ -159,11 +158,12 @@ const useSelection = () => {
 
 const App = () => {
   const [data, setData] = useState({});
-  const [inventory, setInventory] = useState({});
+  //const [inventory, setInventory] = useState({});
   const products = Object.values(data); 
   const [productsDisplay, setProductDisplay] = useState([]);
 
   const [visible, setVisible] = useState(false);
+  //const [sizeChartVisible, setSizeChartVisible] = useState(false);
   const [selected, addProduct, deleteProduct] = useSelection();
   //the x to be given should be sku
 
@@ -188,11 +188,14 @@ const App = () => {
   //inventory is an object not an array
   return (
     //console.log(inventory)
-      <Container>
+    //products.map(product => <li key={product.sku}>{product.title}</li>)
+    
+    <Container>
       <Banner />
       <ShoppingCart selected={ selected } stateVisible={ { visible, setVisible } } deleteProduct={ deleteProduct }/>
       <ProductList products={ products } stateProduct={ { productsDisplay, setProductDisplay} } stateSelect={ {selected, addProduct, deleteProduct} } setVisible={ setVisible }/>
     </Container>   
+   
   );
 };
 // {products.map(product => <li key={product.sku}>{product.title}</li>)}
@@ -231,6 +234,7 @@ export default App;
       "currencyId": "USD",
       "currencyFormat": "$",
       "isFreeShipping": true
+      "size": 'S'
       "quantity": 1
     },
    {
