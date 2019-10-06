@@ -15,8 +15,13 @@ const SizeChart = ({ stateSizeChartVisible, product, setVisible, stateSelect }) 
   const availableSizes = sizes.filter(size => product[size] !== 0);
   //only show buttons for existing sizes
   return (
-  <Modal open={ stateSizeChartVisible.sizeChartVisible } closeIcon>
-    <Header icon='cart arrow down' content='Choose Size' />
+  <Modal open={ stateSizeChartVisible.sizeChartVisible }>
+    <Modal.Header> Choose Size  
+    <Button onClick = {() => stateSizeChartVisible.setSizeChartVisible(false)}>
+      close
+    </Button>
+    </Modal.Header>
+    
     <Modal.Actions>
       { availableSizes.map(size =>
           <Button

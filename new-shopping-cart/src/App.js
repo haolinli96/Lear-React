@@ -1,26 +1,57 @@
 import React, { useEffect, useState } from 'react';
 //import 'rbx/index.css'; //import in react file need styling
 //import { Button, Container, Title, Message, Column, Card, Image, Content, Block, Box } from 'rbx'; //and specify the components
-import { Container, Header } from 'semantic-ui-react'
+import { Container, Header, Message, Button } from 'semantic-ui-react'
 import {db} from './db';
 import ProductList from './ProductList'
 import ShoppingCart from './ShoppingCart'
 
-//import firebase from 'firebase/app';
+import firebase from 'firebase/app';
 import 'firebase/database';
 import "firebase/auth";
 import "firebase/firestore";
 import 'firebase/auth';
+
+import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
+
 //import { ColumnGroup } from 'rbx/grid/columns/column-group';
 
 
-//
+const uiConfig = {
+  signInFlow: 'popup',
+  signInOptions: [
+    firebase.auth.GoogleAuthProvider.PROVIDER_ID
+  ],
+  callbacks: {
+    signInSuccessWithAuthResult: () => false
+  }
+};
 
-const Banner = () => (
+const Banner = ({ user }) => (
   <React.Fragment>
-    <Header>{ 'Shopping Cart' }</Header>
+  { user ? <Welcome user={ user } /> : <SignIn /> }    
+  <Header>{ 'Shopping Cart' }</Header>
   </React.Fragment>
 );
+
+const SignIn = () => (
+  <StyledFirebaseAuth
+    uiConfig={uiConfig}
+    firebaseAuth={firebase.auth()}
+  />
+);
+
+const Welcome = ({ user }) => (
+  <Message color='blue'>
+    <Message.Header>
+      Welcome, {user.displayName}
+      <Button primary onClick={() => firebase.auth().signOut()}>
+        Log out
+      </Button>
+    </Message.Header>
+  </Message>
+);
+
 
 //use badge for free shipping
 /* const Product = ({ product, stateSelect, setVisible }) => (
@@ -154,6 +185,7 @@ const useSelection = () => {
     setSelected(selected.filter(y => ((y.sku !== x.sku) || (y.size !== x.size))));
     //改inventory！！！！！！
 
+    //这里改product自己就行，checkout再改inventory吧
     //db.child(x.sku.toString()).child(x.size).update( + x.quantity).catch(error => alert(error));
 
   };
@@ -171,6 +203,7 @@ const App = () => {
   //const [sizeChartVisible, setSizeChartVisible] = useState(false);
   const [selected, addProduct, deleteProduct] = useSelection();
   //the x to be given should be sku
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -190,13 +223,17 @@ const App = () => {
     fetchProducts();
   }, []);
 
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged(setUser);
+  }, []);
+
   //inventory is an object not an array
   return (
     //console.log(inventory)
     //products.map(product => <li key={product.sku}>{product.title}</li>)
     
     <Container>
-      <Banner />
+      <Banner user={ user }/>
       <ShoppingCart selected={ selected } stateVisible={ { visible, setVisible } } deleteProduct={ deleteProduct }/>
       <ProductList products={ products } stateProduct={ { productsDisplay, setProductDisplay} } stateSelect={ {selected, addProduct, deleteProduct} } setVisible={ setVisible }/>
     </Container>   
