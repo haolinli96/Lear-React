@@ -2,12 +2,12 @@ import React, { useState } from 'react'
 import { Button, Card, Image, Container } from 'semantic-ui-react'
 import SizeChart from './SizeChart'
 
-const HandleClick = ({ product, stateSelect, setVisible, stateSizeChartVisible }) => (
+/* const HandleClick = ({ product, stateSelect, setVisible, stateSizeChartVisible }) => (
     //stateSelect.addProduct(product); 
     //setVisible(true);
     stateSizeChartVisible.setSizeChartVisible(true)
 
-);
+); */
 
 //open={ stateVisible.visible }
 
@@ -20,7 +20,7 @@ const Product = ({ product, stateSelect, setVisible }) => {
     const [sizeChartVisible, setSizeChartVisible] = useState(false);
 
     return (
-        <Container>
+        <React.Fragment>
             <SizeChart stateSizeChartVisible = { { sizeChartVisible, setSizeChartVisible } } 
             product={ product } setVisible={ setVisible } stateSelect={ stateSelect }/>
             <Card>
@@ -42,7 +42,7 @@ const Product = ({ product, stateSelect, setVisible }) => {
                 </Button>
             </Card.Content>
             </Card>
-        </Container>
+        </React.Fragment>
 );
 };
 

@@ -45,15 +45,14 @@ const ProductList = ({ products, stateProduct, stateSelect, setVisible }) => {
                 <SizeSelector stateSize={ { sizeList, toggle } } 
                 stateProduct={ stateProduct } products={ products }/>
             </Grid.Column>
-            <Grid.Row>
-            <Card.Group>
+                <Grid.Row  columns={16}>
+                <Card.Group>
                 { productsDisplay.map(product =>
-                        <Product key={ product.sku } product={ product } 
-                        stateSelect= { stateSelect } setVisible={ setVisible }   
+                        <Product key={ product.sku } product={ product } stateSelect= { stateSelect } setVisible={ setVisible } 
                     />) }
-                    
-                </Card.Group>          
-            </Grid.Row>  
+                
+                </Card.Group>  
+                </Grid.Row>        
         </Grid>
     );
 };
@@ -62,7 +61,7 @@ const ProductList = ({ products, stateProduct, stateSelect, setVisible }) => {
               
       
 { productsDisplay.map(product =>
-                        <Product key={ product.sku } product={ product } stateSelect= { stateSelect } setVisible={ setVisible } stateSizeChartVisible = { stateSizeChartVisible } 
+                        <Product key={ product.sku } product={ product } stateSelect= { stateSelect } setVisible={ setVisible } 
                     />) }
                     
                 </Card.Group> */

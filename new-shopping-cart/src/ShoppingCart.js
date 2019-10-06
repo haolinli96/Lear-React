@@ -1,4 +1,4 @@
-import {Button, Segment, Header, Icon, Image, Modal, Item } from 'semantic-ui-react'
+import {Button, Header, Icon, Image, Modal, Item } from 'semantic-ui-react'
 import React from 'react'
 
 const SelectedItem = ({ selectedItem, deleteProduct }) => (

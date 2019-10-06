@@ -144,12 +144,17 @@ const useSelection = () => {
     else { tempSelectedItem = Object.assign(tempQuantitySize, x);
     setSelected([tempSelectedItem].concat(selected));}
 
+    //????想一下到底是多少
+    //db.child(String(x.sku)).child(size).update(x[size] - 1).catch(error => alert(error));
     //改inventory！！！！！
 
   };
-  const deleteProduct = (x) => {
+  const deleteProduct = (x) => { //x是selected里的了
+
     setSelected(selected.filter(y => ((y.sku !== x.sku) || (y.size !== x.size))));
     //改inventory！！！！！！
+
+    //db.child(x.sku.toString()).child(x.size).update( + x.quantity).catch(error => alert(error));
 
   };
   return [selected, addProduct, deleteProduct];
@@ -206,7 +211,7 @@ export default App;
 
 /*inventory
 {
- 12064273040195392: {
+  12064273040195392: {
       "S": 0,
       "M": 3,
       "L": 1,
@@ -221,7 +226,38 @@ export default App;
 }
 */
 
-
+/*product
+{
+    "12064273040195392": {
+      "sku": 12064273040195392,
+      "title": "Cat Tee Black T-Shirt",
+      "description": "4 MSL",
+      "style": "Black with custom print",
+      "price": 10.9,
+      "currencyId": "USD",
+      "currencyFormat": "$",
+      "isFreeShipping": true,
+      "S": 0,
+      "M": 3,
+      "L": 1,
+      "XL": 2
+    },
+    "51498472915966370": {
+      "sku": 51498472915966370,
+      "title": "Dark Thug Blue-Navy T-Shirt",
+      "description": "",
+      "style": "Front print and paisley print",
+      "price": 29.45,
+      "currencyId": "USD",
+      "currencyFormat": "$",
+      "isFreeShipping": true,
+      "S": 0,
+      "M": 3,
+      "L": 1,
+      "XL": 2
+    }
+}
+ */
 
 /* selected
   [
@@ -233,8 +269,8 @@ export default App;
       "price": 29.45,
       "currencyId": "USD",
       "currencyFormat": "$",
-      "isFreeShipping": true
-      "size": 'S'
+      "isFreeShipping": true,
+      "size": 'S',
       "quantity": 1
     },
    {
@@ -245,7 +281,8 @@ export default App;
       price: 9,
       currencyId: "USD",
       currencyFormat: "$",
-      isFreeShipping: true
+      isFreeShipping: true,
+      "size": 'S',
       quantity: 3
     }
 ]
